@@ -18,11 +18,13 @@ public:
 	LinkedList() { head = tail = nullptr; }
 
 	// Methods
-	void Add(T const data);
+	void Push(T const data);
+	void Append(T const data);
+	void Insert(T const data, int const insertPosition = 0);
 	int Length(bool const print = false);
 	void Print();
 	void TailPrint();
 	void Remove(int const elementPosition);
-	T Pop();
+	void Pop(T &data);
 
 };

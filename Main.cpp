@@ -7,31 +7,41 @@
 int main()
 {
 	// example uses
-
 	LinkedList<std::string> myList;
-	std::string text;
+	
 
-	myList.Add("1st");
-	myList.Add("2nd");
-
+	myList.Push("1st");
+	myList.Append("3rd");
+	myList.Insert("2nd", 1);
+	myList.Print();
 	myList.TailPrint();
 
-	myList.Remove(1);
+	myList.Remove(3);
+	myList.Remove(0);
+	myList.Push("1st");
+	myList.Print();
+	myList.Remove(2);
+	myList.Print();
+	myList.Append("4th");
+	myList.Insert("3rd", 2);
+	myList.Print();
+	myList.Insert("new", 0);
+	myList.Print();
+	std::string text;
+	myList.Pop(text);
 
-	text = myList.Pop();
-	std::cout << "i grabbed the data :" << text << " : from the end of my list then deleted it from the list.\n" << std::endl;
+	std::cout << text << std::endl;
+	
+	myList.Print();
 
-	LinkedList<int> numberList;
-	numberList.Add(100);
-	numberList.Add(200);
-	numberList.TailPrint();
-
-	int last = numberList.Pop();
-	std::cout << "I removed and stored the last value in my number list : " << last << std::endl;
+	/*LinkedList<int> numberList;
+	numberList.Push(100);
+	numberList.Insert(200, 3);
+	numberList.Print();
+	numberList.TailPrint();*/
 
 
-	int freeze = 0;
-	std::cin >> freeze;
+	std::cin.get();
 
 	return 0;
 }
