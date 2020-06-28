@@ -3,7 +3,7 @@
 #include <string>
 
 template <class T>
-void LinkedList<T>::Insert (T const data, int const insertPosition)
+void LinkedList<T>::Insert (T const data, int const insertPosition, const bool print)
 {
 	if ((insertPosition > lengthOfList) || (insertPosition < 0))
 	{
@@ -57,20 +57,21 @@ void LinkedList<T>::Insert (T const data, int const insertPosition)
 			newData->next = current;
 			lengthOfList++;
 		}
-		std::cout << "Added '" << data << "' to the list at position " << insertPosition << std::endl;
+		if (print)
+			std::cout << "Added '" << data << "' to the list at position " << insertPosition << std::endl;
 	}
 }
 
 template <class T>
-void LinkedList<T>::Push(T const data)
+void LinkedList<T>::Push(T const data, const bool print)
 {
-	Insert(data, 0);
+	Insert(data, 0, print);
 }
 
 template <class T>
-void LinkedList<T>::Append(T const data)
+void LinkedList<T>::Append(T const data, const bool print)
 {
-	Insert(data, lengthOfList);
+	Insert(data, lengthOfList, print);
 }
 
 template <class T>
@@ -85,7 +86,7 @@ int LinkedList<T>::Length(bool const print)
 template <class T>
 void LinkedList<T>::Print()
 {
-	if (head == nullptr) // if list is empty
+	if (lengthOfList < 1) // if list is empty
 	{
 		std::cout << "ERROR: There is no data in the list to print." << std::endl;
 		return;
@@ -109,11 +110,11 @@ void LinkedList<T>::TailPrint()
 	if (tail != nullptr)
 		std::cout << "Last value in the list is: " << tail->data << std::endl;
 	else
-		std::cout << "ERROR: The list is empty.. Cannot print the last element" << std::endl;
+		std::cout << "ERROR: The list is empty." << std::endl;
 }
 
 template <class T>
-void LinkedList<T>::Remove(int const elementPosition) // 1 -> ... lengthOfList.
+void LinkedList<T>::Remove(int const elementPosition, const bool print) // 1 -> ... lengthOfList.
 {
 	if (head == nullptr)
 	{
@@ -135,14 +136,15 @@ void LinkedList<T>::Remove(int const elementPosition) // 1 -> ... lengthOfList.
 			head = head->next;
 
 			delete toDelete;
-			std::cout << "Removed the 1st element from the list" << std::endl;
+			if (print)
+				std::cout << "Removed the 1st element from the list" << std::endl;
 			lengthOfList--;
-			return;
 		}
 		else
 		{
 			delete head;
-			std::cout << "Removed the 1st element from the list. The list is now empty" << std::endl;
+			if (print)
+				std::cout << "Removed the 1st element from the list. The list is now empty" << std::endl;
 			head = tail = nullptr;
 			lengthOfList--;
 		}
@@ -171,44 +173,61 @@ void LinkedList<T>::Remove(int const elementPosition) // 1 -> ... lengthOfList.
 		}
 
 		delete toDelete;
-		std::cout << "Removed the element in position " << currentElement << " from the list." << std::endl;
+		if (print)
+			std::cout << "Removed the element in position " << currentElement << " from the list." << std::endl;
 		lengthOfList--;
 
 	}
 }
 
 template <class T>
-void LinkedList<T>::Pop(T &data)
+void LinkedList<T>::Pop(const bool print)
 {
-	data = tail->data;
-	if (head->next != nullptr)
+	Remove(lengthOfList - 1);
+
+	if (print)
+		std::cout << "The last element in the list was deleted" << std::endl;
+}
+
+template <class T>
+void LinkedList<T>::Pop(T &data, const bool print)
+{
+	if (lengthOfList < 1)
 	{
-		
-		int currentElement = 1;
-
-		DataNode<T>* previous = head;
-
-		while (currentElement != lengthOfList - 1)
-		{
-			previous = previous->next;
-			currentElement++;
-		}
-
-		delete tail;
-		lengthOfList--;
-		tail = previous;
-		tail->next = nullptr;
-		std::cout << "i popped the data '" << data << "' from the end of the list.\n" << std::endl;
+		std::cout << "ERROR: The list has no data to delete - Pop Failed" << std::endl;
+		return;
 	}
-	else if (lengthOfList == 1)
+
+	else
 	{
-		delete tail;
-		head = tail = nullptr;
-		lengthOfList--;
-		std::cout << "i grabbed the data :" << data << " : from the end of my list then deleted it from the list.\n" << std::endl;
+		data = tail->data;
+		Remove(lengthOfList - 1);
+		if (print)
+			std::cout << "i grabbed the data '" << data << "' from the end of the list, stored it in the variable provided and then deleted it from the list.\n" << std::endl;
+	}
+}
+
+
+template <class T>
+LinkedList<T>::~LinkedList()
+{
+	std::cout << "Destroying all elements in the list..." << std::endl;
+
+	if (head == NULL)
+	{
+		std::cout << "There was no nodes to remove... All data is removed" << std::endl;
 	}
 	else
 	{
-		std::cout << "ERROR: The list has no data to delete - Pop Failed" << lengthOfList << std::endl;
+		std::cout << "The length of the list is: " << lengthOfList << std::endl;
+
+		int counter = 0;
+		while (lengthOfList != 0)
+		{
+			Remove(0);
+			counter++;
+		}
+		
+		std::cout << counter << " nodes were deleted from the heap. \n\nAll nodes removed." << std::endl;
 	}
 }

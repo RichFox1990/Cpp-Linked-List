@@ -7,30 +7,40 @@
 int main()
 {
 	// example uses
-	LinkedList<std::string> myList;
-	
 
-	myList.Push("1st");
-	myList.Append("3rd");
-	myList.Insert("2nd", 1);
+	//Memory leak check:
+	/*std::string name;
+	while (std::cin >> name)
+	{
+		LinkedList<std::string> name;
+		for(int i = 0; i < 20; i++)
+			name.Push("testing");
+	}*/
+
+	LinkedList<std::string> myList;
+	std::string text = "";
+	myList.Pop(text);
+	myList.Push("1st", true);
+	myList.Append("3rd", true);
+	myList.Insert("2nd", 1, true);
 	myList.Print();
 	myList.TailPrint();
 
-	myList.Remove(3);
-	myList.Remove(0);
-	myList.Push("1st");
+	myList.Remove(3, true);
+	myList.Remove(0, true);
+	myList.Push("1st", true);
 	myList.Print();
-	myList.Remove(2);
+	myList.Remove(2, true);
 	myList.Print();
-	myList.Append("4th");
-	myList.Insert("3rd", 2);
+	myList.Pop(true);
+	myList.Append("4th", true);
+	myList.Insert("3rd", 2, true);
 	myList.Print();
-	myList.Insert("new", 0);
+	myList.Insert("new", 0, true);
 	myList.Print();
-	std::string text;
-	myList.Pop(text);
-
-	std::cout << text << std::endl;
+	
+	myList.Pop(text, true);
+	std::cout << "The data stored in my variable 'test' is: " << text << std::endl;
 	
 	myList.Print();
 
